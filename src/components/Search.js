@@ -4,18 +4,25 @@ import SearchIcon from "@material-ui/icons/Search";
 import MicIcon from "@material-ui/icons/Mic";
 import {Button} from "@material-ui/core";
 import { useHistory} from "react-router-dom";
+import { useStateValue } from '../StateProvider';
+import { actionTypes } from '../reducer';
 
 const Search = ({hideButtons=false}) => {
+    const [{term},dispatch] = useStateValue();
     const [input, setInput] = useState("");
     const history = useHistory();
-
+    
     const search = (e) => {
         e.preventDefault();
         
+        dispatch({
+            type: actionTypes.SET_SEARCH_TERM,
+            term: input
+        })
         history.push("/search");
     }
     return (
-        <div className="search">
+        <form className="search">
             <div className="search__input">
                 <SearchIcon className="search__inputIcon"/>
                 <input onChange={(e)=>setInput(e.target.value)}/>
@@ -35,7 +42,7 @@ const Search = ({hideButtons=false}) => {
                     </div>
                 )
             }
-        </div>
+        </form>
     )
 }
 
